@@ -10,17 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_01_154528) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_04_072658) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "channel_users", force: :cascade do |t|
+    t.bigint "channel_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["channel_id"], name: "index_channel_users_on_channel_id"
+    t.index ["user_id"], name: "index_channel_users_on_user_id"
+  end
+
+  create_table "channels", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "messages", force: :cascade do |t|
     t.string "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "recepient_id"
+    t.string "recipient_type"
+    t.bigint "recipient_id"
     t.bigint "sender_id"
-    t.index ["recepient_id"], name: "index_messages_on_recepient_id"
+    t.index ["recipient_type", "recipient_id"], name: "index_messages_on_recipient"
     t.index ["sender_id"], name: "index_messages_on_sender_id"
   end
 
@@ -38,6 +54,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_01_154528) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "messages", "users", column: "recepient_id"
+  add_foreign_key "channel_users", "channels"
+  add_foreign_key "channel_users", "users"
   add_foreign_key "messages", "users", column: "sender_id"
 end
