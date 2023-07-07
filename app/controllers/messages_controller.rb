@@ -23,7 +23,8 @@ class MessagesController < ApplicationController
     if @message.save
       render json: {
         data: @message, 
-        message: 'Successful'
+        message: 'Message was sent',
+        status: 200
       }, status: :created, location: @message
     else
       render json: @message.errors, status: :unprocessable_entity
