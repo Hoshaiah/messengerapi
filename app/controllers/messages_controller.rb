@@ -16,7 +16,6 @@ class MessagesController < ApplicationController
 
   # POST /messages
   def create
-    request.headers['Authorization'].present?
     @message = Message.new(message_params)
     @message.sender_id = current_user.id
 
