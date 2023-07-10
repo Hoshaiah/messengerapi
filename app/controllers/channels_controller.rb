@@ -1,9 +1,10 @@
 class ChannelsController < ApplicationController
     before_action :set_channel, only: %i[ show update destroy ]
+    before_action :authenticate_user, only: [:index, :create]
   
     # GET /channels
     def index
-      @channels = Channel.all
+      @channels = current_user.channels
   
       render json: @channels
     end
@@ -15,8 +16,8 @@ class ChannelsController < ApplicationController
   
     # POST /channels
     def create
+    
       @channel = Channel.new(channel_params)
-  
       if @channel.save
         render json: @channel, status: :created, location: @channel
       else
@@ -47,6 +48,42 @@ class ChannelsController < ApplicationController
       # Only allow a list of trusted parameters through.
       def channel_params
         params.require(:channel).permit(:name)
+      end
+
+      def authenticate_user
+        if request.headers['Authorization'].present?
+          jwt_payload = JWT.decode(request.headers['Authorization'].split(' ').last, Rails.application.credentials.devise_jwt_secret_key!).first
+          current_user = User.find(jwt_payload['sub'])
+        end
+        
+        if !current_user || jwt_payload['jti'] != current_user.jti
+          render json: {
+            status: 404,
+            message: "You do not have permission to do this action."
+          }
+          return
+        end
+  
+  
+        # if params['recipient_type'] == 'Channel'
+        #   channel = Channel.find_by(id: params['recipient_id'])
+        #   if channel.nil?
+        #     render json: {
+        #       status: 404,
+        #       message: "Channel does not exist."
+        #     } 
+        #     return
+        #   end
+  
+  
+        #   if !channel.users.ids.include? current_user.id
+        #   render json: {
+        #     status: 404,
+        #     message: "User is not part of this channel"
+        #   }
+        #   return
+        #   end
+        # end
       end
   end
   
