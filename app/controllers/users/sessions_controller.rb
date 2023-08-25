@@ -10,8 +10,12 @@ class Users::SessionsController < Devise::SessionsController
     render json: {
       status: { 
         code: 200, message: 'Logged in successfully.',
-        data: { user: UserSerializer.new(current_user).serializable_hash[:data][:attributes] }
-      }
+      },
+      headers: {
+        'Authorization': "Bearer #{request.env['warden-jwt_auth.token']}",
+        'id': current_user.id,
+      },
+      data: { user: UserSerializer.new(current_user).serializable_hash[:data][:attributes] },
     }, status: :ok
   end
   def respond_to_on_destroy

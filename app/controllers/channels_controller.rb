@@ -6,12 +6,17 @@ class ChannelsController < ApplicationController
     def index
       @channels = current_user.channels
   
-      render json: @channels
+      render json: {data: @channels}
     end
   
     # GET /channels/1
     def show
-      render json: @channel
+      render json: {
+        data: {
+            **JSON.parse(@channel.to_json),
+            channel_members: @channel.users
+        }
+    }
     end
   
     # POST /channels
@@ -60,7 +65,7 @@ class ChannelsController < ApplicationController
           render json: {
             status: 404,
             message: "You do not have permission to do this action."
-          }
+          }, status: :forbidden
           return
         end
   

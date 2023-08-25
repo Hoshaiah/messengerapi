@@ -17,7 +17,7 @@ class MessagesController < ApplicationController
         recipient_type: params['recipient_type']
       )
     end
-    render json: @messages
+    render json: {data: @messages}
   end
 
   # GET /messages/1
