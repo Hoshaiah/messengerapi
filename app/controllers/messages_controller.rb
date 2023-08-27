@@ -7,10 +7,11 @@ class MessagesController < ApplicationController
     # @messages = Message.all
     if params['recipient_type'] == 'User'
       @messages = Message.where(
-        recipient_id: current_user.id,
-        recipient_type: params['recipient_type'],
-        sender_id: params['sender_id']
-      )
+        "(recipient_id = #{current_user.id} AND sender_id = #{params['sender_id']} AND recipient_type = '#{params['recipient_type']}')
+         OR
+        (recipient_id = #{params['sender_id']}  AND sender_id = #{current_user.id} AND recipient_type = '#{params['recipient_type']}')
+        "
+      ).order(created_at: :asc)
     elsif params['recipient_type'] == 'Channel'
       @messages = Message.where(
         recipient_id: params['recipient_id'],
