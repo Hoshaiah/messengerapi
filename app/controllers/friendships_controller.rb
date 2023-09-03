@@ -20,11 +20,18 @@ class FriendshipsController < ApplicationController
   # POST /friendships
   def create
     @friendship = Friendship.new(friendship_params)
-
-    if @friendship.save
-      render json: @friendship, status: :created, location: @friendship
-    else
-      render json: @friendship.errors, status: :unprocessable_entity
+    @friendship_parallel= Friendship.new(user_id: friendship_params['friend_id'], friend_id: friendship_params['user_id'] )
+    
+    ActiveRecord::Base.transaction do
+      # Attempt to save both items
+      if @friendship.save && @friendship_parallel.save
+        # If both saves are successful, commit the transaction
+        render json: [@friendship, @friendship_parallel], status: :created 
+      else
+        # If any save fails, roll back the transaction
+        render json: {error: {message:"Adding friend was not successful" }}
+        raise ActiveRecord::Rollback
+      end
     end
   end
 
