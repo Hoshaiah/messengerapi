@@ -32,11 +32,12 @@ class MessagesController < ApplicationController
     @message.sender_id = current_user.id
 
     if @message.save
+      ActionCable.server.broadcast("private_chat_2", @message.body)
       render json: {
         data: @message, 
         message: 'Message was sent',
         status: 200
-      }, status: :created, location: @message
+        }, status: :created, location: @message
     else
       render json: @message.errors, status: :unprocessable_entity
     end
