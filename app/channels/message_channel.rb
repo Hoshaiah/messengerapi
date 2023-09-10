@@ -7,8 +7,8 @@ class MessageChannel < ApplicationCable::Channel
 
   def receive(data)
     # Handle data received from the client
-    ActionCable.server.broadcast "private_chat_#{params['username']}", "#{data['message']}"
-    # ActionCable.server.broadcast 'private_chat_', "#{params['username']}"
+    # ActionCable.server.broadcast "private_chat_#{params['username']}", "#{data['message']}"
+    # ActionCable.server.broadcast 'private_chat_1', "#{data['message']} "
   end
 
   def unsubscribed

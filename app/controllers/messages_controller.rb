@@ -31,8 +31,20 @@ class MessagesController < ApplicationController
     @message = Message.new(message_params)
     @message.sender_id = current_user.id
 
+    message_data = {
+      body: @message.body,
+      id: @message.id,
+      sender_id: current_user.id,
+      sender_name: current_user.name,
+      sender_email: current_user.email,
+      recipient_id: message_params['recipient_id'],
+      created_at: @message.created_at,
+      updated_at: @message.updated_at,
+      recipient_type: @message.recipient_type
+    }
     if @message.save
-      ActionCable.server.broadcast("private_chat_2", @message.body)
+      ActionCable.server.broadcast("private_chat_#{message_params['recipient_id']}", message_data)
+      # ActionCable.server.broadcast("private_chat_2", @message.body)
       render json: {
         data: @message, 
         message: 'Message was sent',
