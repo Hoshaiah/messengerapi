@@ -81,6 +81,7 @@ test:
 #
 production:
   <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
   database: messenger_api_production
   username: messenger_api
   password: <%= ENV["MESSENGER_API_DATABASE_PASSWORD"] %>
