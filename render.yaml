@@ -14,5 +14,5 @@ services:
         fromDatabase:
           name: messenger_api
           property: connectionString
-      - key: <%= File.read('config/master.key') %>
+      - key: RAILS_MASTER_KEY
         sync: false
