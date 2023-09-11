@@ -8,6 +8,8 @@ gem "rails", "~> 7.0.5"
 
 gem 'actioncable'
 gem 'redis'
+gem 'hiredis'
+
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 
