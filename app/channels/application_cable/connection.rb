@@ -3,7 +3,7 @@ module ApplicationCable
 
     def connect
 
-      logger.info "#{request.remote_ip}"
+      logger.info "asdf #{request.remote_ip}"
     end
   end
 end

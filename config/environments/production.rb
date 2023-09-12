@@ -34,12 +34,12 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   # Mount Action Cable outside main process or domain.
-  config.action_cable.mount_path = '/cable'
-  config.action_cable.url = "wss://hosh-messenger-api.onrender.com.com/"
-  config.action_cable.allowed_request_origins = [ nil, "http://example.com", /http:\/\/example.*/ ]
+  # config.action_cable.mount_path = '/cable'
+  # config.action_cable.url = "wss://hosh-messenger-api.onrender.com.com/"
+  # config.action_cable.allowed_request_origins = [ null, "http://example.com", /http:\/\/example.*/ ]
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = false
+  # config.force_ssl = true
 
   # Include generic and useful information about system operation, but avoid logging too much
   # information to avoid inadvertent exposure of personally identifiable information (PII).
