@@ -5,7 +5,10 @@ class FriendrequestsController < ApplicationController
   def index
     @friendrequests = Friendrequest.where(friend_id: friendrequest_params['friend_id'])
 
-    render json: @friendrequests
+    friendrequest_data = @friendrequests.map do |request|
+      request.get_user_data(request.user_id)
+    end
+    render json: { friendrequests: friendrequest_data }
   end
 
   # GET /friendrequests/1
