@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :friendrequests
+  # post 'friendships/', to: 'friendships#create', as: 'create_friendship'
+  # get 'friendships/', to: 'friendships#index', as: 'get_friendship'
   resources :friendships
   # devise_for :users
   mount ActionCable.server => '/cable'
