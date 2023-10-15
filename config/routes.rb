@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     sessions: 'users/sessions',
     registrations: 'users/registrations'
   }
+  get 'users/search', to: 'users#search', as: 'search_users'
   resources :messages
   resources :channels
   resources :channel_users

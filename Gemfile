@@ -24,6 +24,8 @@ gem "puma", "~> 5.0"
 
 gem "byebug"
 
+gem 'fuzzy_match'
+
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
 
